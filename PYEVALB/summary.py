@@ -158,6 +158,10 @@ def summary(results):
     # Number of Skip sentence
     summay_list[3] = sentn
 
+    # in case of no valid sentence
+    if sentn == 0:
+        return Summary(*summay_list)
+
     # Bracketing Recall: matched brackets / gold brackets
     summay_list[4] = (sum([item.matched_brackets for
                            item in correct_results]) /
