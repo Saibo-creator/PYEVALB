@@ -21,7 +21,9 @@ from . import summary
 ############################################################
 # Exceptions
 ############################################################
+import logging
 
+logger = logging.getLogger(__name__)
 
 class ScoreException(Exception):
     def get_details(self):
@@ -166,9 +168,25 @@ class Scorer:
             except (WordsUnmatch, LengthUnmatch) as e:
                 current_result = Result()
                 current_result.state = 2
-                print(e.details())
+                logger.debug(e.details())
             except ParsingError as e:
-                print(e.errormessage)
+                current_result = Result()
+                current_result.state = 2
+                logger.debug(e.errormessage)
+            # IndexError: pop from an empty deque
+            except IndexError as e:
+                current_result = Result()
+                current_result.state = 2
+                logger.debug(e)
+            # result.prec = common_numeber / len(test_label_nodes)
+            except ZeroDivisionError as e:
+                current_result = Result()
+                current_result.state = 2
+                logger.debug(e)
+            except AttributeError as e:
+                current_result = Result()
+                current_result.state = 2
+                logger.debug(e)
             finally:
                 current_result.ID = ID
                 results.append(current_result)
